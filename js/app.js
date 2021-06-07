@@ -47,6 +47,7 @@ let count = 0;
 // console.log( 'left',leftImgIndex);
 // rightImgIndex = generateRandomNumber();
 // console.log('right',rightImgIndex);
+let button;
 function render(){
   leftImgIndex = generateRandomNumber();
   middleImgIndex = generateRandomNumber();
@@ -99,6 +100,9 @@ function clickAction(event){
     console.log(Product.allProducts);
     render();
   }else{
+    button =document.getElementById('btn');
+    button.hidden=false;
+    button.addEventListener('click',viewReasults);
     // let productList = document.getElementById('list');
 
     // for(let i =0; i<Product.allProducts.length; i++){
@@ -120,10 +124,10 @@ function viewReasults(){
     productList.append(list);
     list.textContent = `${Product.allProducts[i].name} has been shown for ${Product.allProducts[i].times} times and it has been voted for ${Product.allProducts[i].votes}`;
   }
-
+  button.removeEventListener('click', viewReasults);
+  button.hidden = true;
 }
-let btn = document.getElementById('btn');
-btn.onclick(viewReasults());
+
 
 
 
