@@ -203,15 +203,7 @@ function clickAction(event){
   }
 }
 
-}
 
-
-
-
-
-
-
-}
 // let btn = document.getElementById('btn');
 // btn.onclick(viewReasults());
 
