@@ -136,6 +136,14 @@ function viewReasults(){
   button.hidden = true;
 
 }
+
+
+
+
+
+
+
+}
 // let btn = document.getElementById('btn');
 // btn.onclick(viewReasults());
 
@@ -176,4 +184,5 @@ function viewReasults(){
 //     }
 //   }
 // });
+
 
