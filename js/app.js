@@ -2,12 +2,15 @@
 function generateRandomNumber(){
   return Math.floor(Math.random() * Product.allProducts.length);
 }
+let productNames = [];
+
 
 function Product(name, source){
   this.name = name;
   this.source = source;
   this.times = 0;
   this.votes = 0;
+  productNames.push(this.name);
   Product.allProducts.push(this);
 }
 
@@ -52,10 +55,15 @@ function render(){
   leftImgIndex = generateRandomNumber();
   middleImgIndex = generateRandomNumber();
   rightImgIndex = generateRandomNumber();
-
+  // let index = 0;
+  // let testArr = [leftImgIndex, middleImgIndex, rightImgIndex];
   while(leftImgIndex === middleImgIndex || leftImgIndex === rightImgIndex || rightImgIndex === middleImgIndex || rightImgIndex === leftImgIndex ){
+    // if(testArr[0] === leftImgIndex || testArr[0] === middleImgIndex || testArr[0] === right)
     rightImgIndex = generateRandomNumber();
     middleImgIndex = generateRandomNumber();
+    leftImgIndex = generateRandomNumber();
+    // testArr.push(leftImgIndex, middleImgIndex, rightImgIndex);
+    // console.log(testArr);
   }
   //   console.log(Product.allProducts[leftImgIndex].name);
   //   console.log(Product.allProducts[middleImgIndex].name);
@@ -76,7 +84,7 @@ function render(){
     Product.allProducts[rightImgIndex].times++;
     // console.log(Product.allProducts[rightImgIndex].times);
   }
-  console.log(Product.allProducts);
+  // console.log(Product.allProducts);
 
 }
 render();
@@ -97,7 +105,7 @@ function clickAction(event){
     }else{
       Product.allProducts[middleImgIndex].votes++;
     }
-    console.log(Product.allProducts);
+    // console.log(Product.allProducts);
     render();
   }else{
     button =document.getElementById('btn');
@@ -126,10 +134,55 @@ function viewReasults(){
   }
   button.removeEventListener('click', viewReasults);
   button.hidden = true;
+
 }
 
 
 
 
+
+
+
+}
+// let btn = document.getElementById('btn');
+// btn.onclick(viewReasults());
+
+
+
+// let ctx = document.getElementById('myChart').getContext('2d');
+// let myChart = new Chart(ctx, {
+//   type: 'bar',
+//   data: {
+//     labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+//     datasets: [{
+//       label: '# of Votes',
+//       data: [12, 19, 3, 5, 2, 3],
+//       backgroundColor: [
+//         'rgba(255, 99, 132, 0.2)',
+//         'rgba(54, 162, 235, 0.2)',
+//         'rgba(255, 206, 86, 0.2)',
+//         'rgba(75, 192, 192, 0.2)',
+//         'rgba(153, 102, 255, 0.2)',
+//         'rgba(255, 159, 64, 0.2)'
+//       ],
+//       borderColor: [
+//         'rgba(255, 99, 132, 1)',
+//         'rgba(54, 162, 235, 1)',
+//         'rgba(255, 206, 86, 1)',
+//         'rgba(75, 192, 192, 1)',
+//         'rgba(153, 102, 255, 1)',
+//         'rgba(255, 159, 64, 1)'
+//       ],
+//       borderWidth: 1
+//     }]
+//   },
+//   options: {
+//     scales: {
+//       y: {
+//         beginAtZero: true
+//       }
+//     }
+//   }
+// });
 
 
