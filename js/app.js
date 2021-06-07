@@ -3,6 +3,8 @@ function generateRandomNumber(){
   return Math.floor(Math.random() * Product.allProducts.length);
 }
 let productNames = [];
+let votes = [];
+let times = [];
 
 
 function Product(name, source){
@@ -51,23 +53,27 @@ let count = 0;
 // rightImgIndex = generateRandomNumber();
 // console.log('right',rightImgIndex);
 let button;
+let testArr = [];
 function render(){
   leftImgIndex = generateRandomNumber();
   middleImgIndex = generateRandomNumber();
   rightImgIndex = generateRandomNumber();
   // let index = 0;
-  // let testArr = [leftImgIndex, middleImgIndex, rightImgIndex];
-  while(leftImgIndex === middleImgIndex || leftImgIndex === rightImgIndex || rightImgIndex === middleImgIndex || rightImgIndex === leftImgIndex ){
-    // if(testArr[0] === leftImgIndex || testArr[0] === middleImgIndex || testArr[0] === right)
+// It can be done in both line 63 and 64 they will produce correct answer.
+  while(leftImgIndex === middleImgIndex || leftImgIndex === rightImgIndex || rightImgIndex === middleImgIndex || rightImgIndex === leftImgIndex|| testArr.includes(leftImgIndex) || testArr.includes(middleImgIndex) || testArr.includes(rightImgIndex)){
+    // testArr[0] === leftImgIndex || testArr[0] === middleImgIndex || testArr[0] === rightImgIndex || testArr[1] === leftImgIndex || testArr[1]===middleImgIndex || testArr[1] === rightImgIndex || testArr[2] === leftImgIndex || testArr[2] === middleImgIndex || testArr[2] === rightImgIndex
     rightImgIndex = generateRandomNumber();
     middleImgIndex = generateRandomNumber();
     leftImgIndex = generateRandomNumber();
-    // testArr.push(leftImgIndex, middleImgIndex, rightImgIndex);
+    // testArr.push(leftImgIndex);
+    // testArr.push(middleImgIndex);
+    // testArr.push(rightImgIndex);
     // console.log(testArr);
   }
   //   console.log(Product.allProducts[leftImgIndex].name);
   //   console.log(Product.allProducts[middleImgIndex].name);
   //   console.log(Product.allProducts[rightImgIndex].name);
+  testArr = [leftImgIndex, middleImgIndex, rightImgIndex];
   leftImg.src = Product.allProducts[leftImgIndex].source;
   middleImg.src = Product.allProducts[middleImgIndex].source;
   rightImg.src = Product.allProducts[rightImgIndex].source;
@@ -93,7 +99,7 @@ let container = document.getElementById('container');
 container.addEventListener('click', clickAction);
 
 function clickAction(event){
-  console.log(event.target.id);
+  // console.log(event.target.id);
   count++;
   //   console.log(count);
 
@@ -111,29 +117,91 @@ function clickAction(event){
     button =document.getElementById('btn');
     button.hidden=false;
     button.addEventListener('click',viewReasults);
-    // let productList = document.getElementById('list');
-
-    // for(let i =0; i<Product.allProducts.length; i++){
-    //   let list = document.createElement('li');
-    //   productList.append(list);
-    //   list.textContent = `${Product.allProducts[i].name} has been shown for ${Product.allProducts[i].times} times and it has been voted for ${Product.allProducts[i].votes}`;
-    // }
-    // to stop
     container.removeEventListener('click', clickAction);
+    for (let i = 0; i < Product.allProducts.length; i++) {
+      votes.push(Product.allProducts[i].votes);
+      times.push(Product.allProducts[i].times);
+    }
+    // chart();
+  }
+  function viewReasults(){
+    chart();
+    let productList = document.getElementById('list');
+
+    for(let i =0; i<Product.allProducts.length; i++){
+      let list = document.createElement('li');
+      productList.append(list);
+      list.textContent = `${Product.allProducts[i].name} has been shown for ${Product.allProducts[i].times} times and it has been voted for ${Product.allProducts[i].votes}`;
+    }
+    button.removeEventListener('click', viewReasults);
+    button.hidden = true;
+
+  }
 
 
+
+
+
+  function chart() {
+    let ctx = document.getElementById('myChart');
+    let myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels:productNames,
+        datasets: [{
+          label: '# of Votes',
+          data:votes,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 1
+        },
+        {
+          label: '# of times its shown',
+          data:times,
+          backgroundColor: [
+            'rgba(255, 99, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255, 99, 132, 1)',
+            'rgba(54, 162, 235, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(153, 102, 255, 1)',
+            'rgba(255, 159, 64, 1)'
+          ],
+          borderWidth: 1
+        }
+        ]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
   }
 }
-function viewReasults(){
-  let productList = document.getElementById('list');
-
-  for(let i =0; i<Product.allProducts.length; i++){
-    let list = document.createElement('li');
-    productList.append(list);
-    list.textContent = `${Product.allProducts[i].name} has been shown for ${Product.allProducts[i].times} times and it has been voted for ${Product.allProducts[i].votes}`;
-  }
-  button.removeEventListener('click', viewReasults);
-  button.hidden = true;
 
 }
 
@@ -184,5 +252,6 @@ function viewReasults(){
 //     }
 //   }
 // });
+
 
 
