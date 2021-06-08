@@ -48,31 +48,19 @@ let rightImg = document.getElementById('rightImage');
 
 let maxAttemps = 25;
 let count = 0;
-// leftImgIndex = generateRandomNumber();
-// console.log( 'left',leftImgIndex);
-// rightImgIndex = generateRandomNumber();
-// console.log('right',rightImgIndex);
 let button;
 let testArr = [];
 function render(){
   leftImgIndex = generateRandomNumber();
   middleImgIndex = generateRandomNumber();
   rightImgIndex = generateRandomNumber();
-  // let index = 0;
-// It can be done in both line 63 and 64 they will produce correct answer.
+  // It can be done in both line 63 and 64 they will produce correct answer.
   while(leftImgIndex === middleImgIndex || leftImgIndex === rightImgIndex || rightImgIndex === middleImgIndex || rightImgIndex === leftImgIndex|| testArr.includes(leftImgIndex) || testArr.includes(middleImgIndex) || testArr.includes(rightImgIndex)){
     // testArr[0] === leftImgIndex || testArr[0] === middleImgIndex || testArr[0] === rightImgIndex || testArr[1] === leftImgIndex || testArr[1]===middleImgIndex || testArr[1] === rightImgIndex || testArr[2] === leftImgIndex || testArr[2] === middleImgIndex || testArr[2] === rightImgIndex
     rightImgIndex = generateRandomNumber();
     middleImgIndex = generateRandomNumber();
     leftImgIndex = generateRandomNumber();
-    // testArr.push(leftImgIndex);
-    // testArr.push(middleImgIndex);
-    // testArr.push(rightImgIndex);
-    // console.log(testArr);
   }
-  //   console.log(Product.allProducts[leftImgIndex].name);
-  //   console.log(Product.allProducts[middleImgIndex].name);
-  //   console.log(Product.allProducts[rightImgIndex].name);
   testArr = [leftImgIndex, middleImgIndex, rightImgIndex];
   leftImg.src = Product.allProducts[leftImgIndex].source;
   middleImg.src = Product.allProducts[middleImgIndex].source;
@@ -99,6 +87,8 @@ let container = document.getElementById('container');
 container.addEventListener('click', clickAction);
 
 function clickAction(event){
+  // This is the best place for the getStorageItem() so it can view our old data;
+  getStorageItem();
   // console.log(event.target.id);
   count++;
   //   console.log(count);
@@ -112,7 +102,9 @@ function clickAction(event){
       Product.allProducts[middleImgIndex].votes++;
     }
     // console.log(Product.allProducts);
-    render();
+    // Commented line 104 for testing purposes;
+    // render();
+    storageUpdate();
   }else{
     button =document.getElementById('btn');
     button.hidden=false;
@@ -122,7 +114,6 @@ function clickAction(event){
       votes.push(Product.allProducts[i].votes);
       times.push(Product.allProducts[i].times);
     }
-    // chart();
   }
   function viewReasults(){
     chart();
@@ -136,6 +127,27 @@ function clickAction(event){
     button.removeEventListener('click', viewReasults);
     button.hidden = true;
 
+  }
+
+  function storageUpdate(){
+    // We use JSON is used with ARRAY OF OBJECTS
+    // stringify method is used to convert object to strings
+    let arrString = JSON.stringify(Product.allProducts);
+    // console.log(localStorage.setItem('product', arrString));
+    localStorage.setItem('product', arrString);
+  }
+
+  function getStorageItem(){
+    let previousData = localStorage.getItem('product');
+    // console.log(previousData);
+
+    let previousDataObj = JSON.parse(previousData);
+    // console.log(previousDataObj);
+    if(previousDataObj !== null){
+      // To make sure that the Product.allProducts is not empty;
+      Product.allProducts = previousDataObj;
+    }
+    render();
   }
 
 
@@ -202,48 +214,6 @@ function clickAction(event){
     });
   }
 }
-
-
-// let btn = document.getElementById('btn');
-// btn.onclick(viewReasults());
-
-
-
-// let ctx = document.getElementById('myChart').getContext('2d');
-// let myChart = new Chart(ctx, {
-//   type: 'bar',
-//   data: {
-//     labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-//     datasets: [{
-//       label: '# of Votes',
-//       data: [12, 19, 3, 5, 2, 3],
-//       backgroundColor: [
-//         'rgba(255, 99, 132, 0.2)',
-//         'rgba(54, 162, 235, 0.2)',
-//         'rgba(255, 206, 86, 0.2)',
-//         'rgba(75, 192, 192, 0.2)',
-//         'rgba(153, 102, 255, 0.2)',
-//         'rgba(255, 159, 64, 0.2)'
-//       ],
-//       borderColor: [
-//         'rgba(255, 99, 132, 1)',
-//         'rgba(54, 162, 235, 1)',
-//         'rgba(255, 206, 86, 1)',
-//         'rgba(75, 192, 192, 1)',
-//         'rgba(153, 102, 255, 1)',
-//         'rgba(255, 159, 64, 1)'
-//       ],
-//       borderWidth: 1
-//     }]
-//   },
-//   options: {
-//     scales: {
-//       y: {
-//         beginAtZero: true
-//       }
-//     }
-//   }
-// });
 
 
 
